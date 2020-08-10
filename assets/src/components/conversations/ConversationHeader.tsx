@@ -1,12 +1,14 @@
 import React from 'react';
 import {Box, Flex} from 'theme-ui';
-import {colors, Button, Select, Title, Tooltip} from '../common';
+import {colors, Button, Select, Title, Tooltip, Popconfirm} from '../common';
 import {
   CheckOutlined,
   StarOutlined,
   StarFilled,
   UploadOutlined,
   UserOutlined,
+  DeleteOutlined,
+  QuestionCircleOutlined,
 } from '../icons';
 
 const ConversationHeader = ({
@@ -17,6 +19,7 @@ const ConversationHeader = ({
   onRemovePriority,
   onCloseConversation,
   onReopenConversation,
+  onDeleteConversation,
 }: {
   conversation: any;
   users: Array<any>;
@@ -25,6 +28,7 @@ const ConversationHeader = ({
   onRemovePriority: (conversationId: string) => void;
   onCloseConversation: (conversationId: string) => void;
   onReopenConversation: (conversationId: string) => void;
+  onDeleteConversation: (conversationId: string) => void;
 }) => {
   if (!conversation) {
     // No point in showing the header if no conversation exists
@@ -118,6 +122,21 @@ const ConversationHeader = ({
               </Tooltip>
             )}
           </Box>
+
+          {status === 'closed' && (
+            <Box mx={1}>
+              <Popconfirm
+                title="Are you sure you want to delete the conversation?"
+                placement="top"
+                icon={<QuestionCircleOutlined style={{color: 'red'}} />}
+                onConfirm={() => onDeleteConversation(conversationId)}
+                okText="Yes"
+                cancelText="No"
+              >
+                <Button icon={<DeleteOutlined />} />
+              </Popconfirm>
+            </Box>
+          )}
         </Flex>
       </Flex>
     </header>

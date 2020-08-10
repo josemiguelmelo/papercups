@@ -63,6 +63,7 @@ type Props = {
   fetch: () => Promise<Array<string>>;
   onSelectConversation: (id: string | null, fn?: () => void) => void;
   onUpdateConversation: (id: string, params: any) => Promise<void>;
+  onDeleteConversation?: (id: string) => Promise<void>;
   onSendMessage: (
     message: string,
     conversationId: string,
@@ -131,6 +132,13 @@ class ConversationsContainer extends React.Component<Props, State> {
     });
 
     this.props.onSelectConversation(id);
+  };
+
+  handleDeleteConversation = async (conversationId: string) => {
+    if (this.props.onDeleteConversation) {
+      await this.props.onDeleteConversation(conversationId);
+      await this.refreshSelectedConversation();
+    }
   };
 
   handleCloseConversation = async (conversationId: string) => {
@@ -285,6 +293,7 @@ class ConversationsContainer extends React.Component<Props, State> {
             onRemovePriority={this.handleMarkUnpriority}
             onCloseConversation={this.handleCloseConversation}
             onReopenConversation={this.handleReopenConversation}
+            onDeleteConversation={this.handleDeleteConversation}
           />
 
           <Content style={{overflowY: 'scroll'}}>

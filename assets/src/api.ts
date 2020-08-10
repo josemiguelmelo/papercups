@@ -266,6 +266,20 @@ export const updateConversation = async (
     .then((res) => res.body.data);
 };
 
+export const deleteConversation = async (
+  conversationId: string,
+  token = getAccessToken()
+) => {
+  if (!token) {
+    throw new Error('Invalid token!');
+  }
+
+  return request
+    .delete(`/api/conversations/${conversationId}`)
+    .set('Authorization', token)
+    .send();
+};
+
 export const countMessages = async (token = getAccessToken()) => {
   if (!token) {
     throw new Error('Invalid token!');
